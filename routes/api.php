@@ -1,18 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-// Route::get("/test",function(){
-// 	return "this is test";
-// });
-// Route::match(['get', 'post'], '/', function () {
-//     return "match";
-// });
-// Route::any('/', function () {
-//     return "this is any";
-// });
-// Route::fallback(function () {
-//     return "page not found";
-// });
 
 /**
  * Route::get("/users/{user}/skills", "User\SkillControlelr@index");
