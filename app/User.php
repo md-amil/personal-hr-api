@@ -25,20 +25,21 @@ class User extends Model
 
     public function educations()
     {
-    	return $this->hasMany(Education::class);
+        return $this->hasMany(Education::class);
     }
 
     public function experiences()
     {
-    	return $this->hasMany(Experience::class);
+        return $this->hasMany(Experience::class);
     }
-    public function vacancies(){
-        return $this->belongsToMany(App\Vacancy::class,'user_vacancy');
+    public function vacancies()
+    {
+        return $this->belongsToMany(Vacancy::class, 'user_vacancy');
     }
     // public function questions(){
     //     return $this->belongsToMany(App\Question::class);
     // }
-        // public function interviews(){
-        //     return $this->
-        // }
+    // public function interviews(){
+    //     return $this->
+    // }
 }

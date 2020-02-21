@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
@@ -7,6 +8,7 @@ use \App\Institute;
 use \App\Course;
 use \App\User;
 use \App\Education;
+use Carbon\Carbon;
 
 class EducationController extends Controller
 {
@@ -32,21 +34,21 @@ class EducationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, User $user)
-    {   
-        $this->validate($request,[
-            'institute'=>'required',
-            'course'=>'required'
+    {
+        $this->validate($request, [
+            'institute' => 'required',
+            'course' => 'required'
         ]);
         $institute = Institute::firstOrCreate(['name' => $request->institute]);
         $course = Course::firstOrCreate(['name' => $request->course]);
         $education = new Education([
             'institute_id' => $institute->id,
             'course_id' => $course->id,
-            'start_at' => $request->start_at,
-            'end_at' => $request->end_at
+            'start_at' => Carbon::parse($request->start_at),
+            'end_at' => $request->end_at ? Carbon::parse($request->end_at) : null
         ]);
         $user->educations()->save($education);
-        return $education->load('institute','course');
+        return $education->load('institute', 'course');
     }
 
     /**
@@ -56,7 +58,7 @@ class EducationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user,Education $education)
+    public function update(Request $request, User $user, Education $education)
     {
         $institute = Institute::firstOrCreate(['name' => $request->institute]);
         $course = Course::firstOrCreate(['name' => $request->course]);
@@ -65,7 +67,7 @@ class EducationController extends Controller
             'institute_id' => $institute->id,
             'course_id' => $course->id,
             'start_at' => $request->start_at,
-            'end_at' => $request->end_at
+            'end_at' => $request->end_at ? Carbon::parse($request->end) : null
         ]);
         return $education;
     }
@@ -76,9 +78,11 @@ class EducationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user,Education $education)
+    public function destroy(User $user, Education $education)
     {
         $education->delete();
-        return "education deleted successfully";
+        return [
+            "message" => "education deleted successfully"
+        ];
     }
 }
